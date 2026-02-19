@@ -1,12 +1,13 @@
-import { useRef, useState } from 'react'
+export interface YouTubeVideo {
+  video_id: string
+  title: string
+}
+
+export type VideoCategory = 'cafe' | 'cars'
 
 export const VIDEO_IDS = {
-  'cafe': [
-    'BYTxPFj44uo'
-  ],
-  'cars': [
-    'QvA2NCigtBY'
-  ]
+  cafe: ['1YcnN9C0PCo', 'nfW6f2gf4g8', 'wGskLO2ESOI', 'OpZX51yb23w'],
+  cars: ['tiyuRJthHwc', 'R0UYHS8A_A', 'qzyl0f3mRG0', 'N0FPLdagb8Q']
 }
 
 export function shuffleArray<T>(array: T[]): T[] {
@@ -18,67 +19,22 @@ export function shuffleArray<T>(array: T[]): T[] {
   return shuffled
 }
 
-export function getRandomVideoId(category: keyof typeof VIDEO_IDS): string {
+export function getRandomVideoId(category: VideoCategory): string {
   const videos = VIDEO_IDS[category]
   const shuffled = shuffleArray(videos)
   return shuffled[0]
 }
 
-export function useYouTubePlayer() {
-  const playerInstanceRef = useRef<any>(null)
-  const [isPlayerReady, setIsPlayerReady] = useState(false)
-  const [currentVideoId, setCurrentVideoId] = useState<string | null>(null)
-  const [volume, setVolume] = useState(50)
-
-  const onReady = (event: any) => {
-    if (event?.target) {
-      playerInstanceRef.current = event.target
-      event.target.setVolume(volume)
-      setIsPlayerReady(true)
-    }
+export function getChannelVideoIds(category: string): string[] {
+  const categories: Record<string, string[]> = {
+    cafe: ['BYTxPFj44uo'],
+    cars: ['QvA2NCigtBY']
   }
+  return categories[category] || []
+}
 
-  const onStateChange = (event: any) => {
-    if (!event?.data) return
-    const state = event.data
-    return state === 1
-  }
-
-  const play = () => {
-    if (playerInstanceRef.current && playerInstanceRef.current.playVideo) {
-      playerInstanceRef.current.playVideo()
-    }
-  }
-
-  const stop = () => {
-    if (playerInstanceRef.current && playerInstanceRef.current.stopVideo) {
-      playerInstanceRef.current.stopVideo()
-    }
-  }
-
-  const setVolumeLevel = (newVolume: number) => {
-    setVolume(newVolume)
-    if (isPlayerReady && playerInstanceRef.current) {
-      playerInstanceRef.current.setVolume(newVolume)
-    }
-  }
-
-  const reset = () => {
-    setIsPlayerReady(false)
-    setCurrentVideoId(null)
-  }
-
-  return {
-    playerInstanceRef,
-    currentVideoId,
-    setCurrentVideoId,
-    isPlayerReady,
-    volume,
-    setVolume: setVolumeLevel,
-    onReady,
-    onStateChange,
-    play,
-    stop,
-    reset
-  }
+export async function getRandomChannelVideoId(category: string): Promise<string> {
+  const ids = getChannelVideoIds(category)
+  if (ids.length === 0) return 'BYTxPFj44uo'
+  return ids[Math.floor(Math.random() * ids.length)]
 }
