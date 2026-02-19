@@ -4,20 +4,26 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Volume2, VolumeX, Play, StopCircle, Radio } from 'lucide-react'
 import { CATEGORIES, getRandomVideoId } from '@/lib/videos'
+import { AnimatedBackground } from '@/components/AnimatedBackground'
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState<keyof typeof CATEGORIES | null>(null)
   const [currentVideoId, setCurrentVideoId] = useState<string | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [volume, setVolume] = useState(50)
+  const [isPlayerReady, setIsPlayerReady] = useState(false)
   const playerInstanceRef = useRef<any>(null)
 
   const onReady = (event: any) => {
-    playerInstanceRef.current = event.target
-    event.target.setVolume(volume)
+    if (event?.target) {
+      playerInstanceRef.current = event.target
+      event.target.setVolume(volume)
+      setIsPlayerReady(true)
+    }
   }
 
   const onStateChange = (event: any) => {
+    if (!event?.data) return
     const state = event.data
     if (state === YouTube.PlayerState.PLAYING) {
       setIsPlaying(true)
@@ -27,18 +33,19 @@ function App() {
   }
 
   const play = () => {
-    if (playerInstanceRef.current) {
+    if (isPlayerReady && playerInstanceRef.current && playerInstanceRef.current.playVideo) {
       playerInstanceRef.current.playVideo()
     }
   }
 
   const stop = () => {
-    if (playerInstanceRef.current) {
+    if (isPlayerReady && playerInstanceRef.current && playerInstanceRef.current.stopVideo) {
       playerInstanceRef.current.stopVideo()
     }
   }
 
   const handlePlayStop = () => {
+    if (!isPlayerReady) return
     if (isPlaying) {
       stop()
     } else {
@@ -49,7 +56,7 @@ function App() {
   const handleVolumeMin = () => {
     const newVolume = Math.max(0, volume - 10)
     setVolume(newVolume)
-    if (playerInstanceRef.current) {
+    if (isPlayerReady && playerInstanceRef.current) {
       playerInstanceRef.current.setVolume(newVolume)
     }
   }
@@ -57,7 +64,7 @@ function App() {
   const handleVolumeMax = () => {
     const newVolume = Math.min(100, volume + 10)
     setVolume(newVolume)
-    if (playerInstanceRef.current) {
+    if (isPlayerReady && playerInstanceRef.current) {
       playerInstanceRef.current.setVolume(newVolume)
     }
   }
@@ -65,13 +72,16 @@ function App() {
   const selectCategory = (key: keyof typeof CATEGORIES) => {
     const randomVideoId = getRandomVideoId(key)
     setIsPlaying(false)
+    setIsPlayerReady(false)
     setSelectedCategory(key)
     setCurrentVideoId(randomVideoId)
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-slate-800/80 backdrop-blur-sm border-purple-500/30">
+    <>
+      <AnimatedBackground isPlaying={isPlaying} />
+      <div className="min-h-screen flex items-center justify-center p-4 relative z-10">
+      <Card className="w-full max-w-md bg-slate-800 border-purple-500/30">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
             <Radio className="w-12 h-12 text-purple-400" />
@@ -165,7 +175,8 @@ function App() {
           />
         </div>
       )}
-    </div>
+      </div>
+    </>
   )
 }
 
