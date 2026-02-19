@@ -1,10 +1,11 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import YouTube from 'react-youtube'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Volume2, VolumeX, Play, StopCircle, Radio } from 'lucide-react'
 import { CATEGORIES, getRandomVideoId } from '@/lib/videos'
 import { AnimatedBackground } from '@/components/AnimatedBackground'
+import { fetchNewsData } from '@/lib/news'
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState<keyof typeof CATEGORIES | null>(null)
@@ -12,7 +13,12 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [volume, setVolume] = useState(50)
   const [isPlayerReady, setIsPlayerReady] = useState(false)
+  const [newsText, setNewsText] = useState('Loading news...')
   const playerInstanceRef = useRef<any>(null)
+
+  useEffect(() => {
+    fetchNewsData('id', 'id').then(setNewsText)
+  }, [])
 
   const onReady = (event: any) => {
     if (event?.target) {
@@ -159,10 +165,10 @@ function App() {
       <div className="w-full max-w-md mt-4 overflow-hidden bg-slate-800 border border-purple-500/30 rounded-lg">
         <div className="animate-marquee marquee-content text-purple-300 py-2 px-4">
           <span className="whitespace-nowrap">
-            BREAKING NEWS: Latest updates from around the world • Technology advances in AI and machine learning • Weather forecast predicts sunny days ahead • Stock markets showing positive trends • New scientific discoveries revolutionize medicine • Sports update: Championship finals scheduled for next week • Entertainment: Award season kicks off with stunning performances
+            {newsText}
           </span>
           <span className="whitespace-nowrap">
-            BREAKING NEWS: Latest updates from around the world • Technology advances in AI and machine learning • Weather forecast predicts sunny days ahead • Stock markets showing positive trends • New scientific discoveries revolutionize medicine • Sports update: Championship finals scheduled for next week • Entertainment: Award season kicks off with stunning performances
+             • {newsText}
           </span>
         </div>
       </div>
