@@ -35,7 +35,6 @@ function setCachedStations(category: string, stations: RadioStation[]): void {
     data.date = getTodayDate()
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
   } catch (error) {
-    console.error('Error writing to localStorage:', error)
   }
 }
 
@@ -49,7 +48,6 @@ async function fetchFromRadioBrowser(query: string): Promise<RadioStation[]> {
       .filter(station => station.lastcheckok === 1 && station.codec !== 'unknown')
       .slice(0, 10)
   } catch (error) {
-    console.error('Error fetching radio stations:', error)
     return []
   }
 }
@@ -62,14 +60,11 @@ export async function fetchRadioStations(category: string): Promise<RadioStation
   const isQuery = category.includes('&')
 
   if (data.date === today && !isQuery && data.stations[category]) {
-    console.log(`[Radio] Using cached stations for ${category}`)
     return data.stations[category]
   }
 
-  console.log(`[Radio] Fetching stations for ${category}`)
   const query = isQuery ? category : getCategoryQuery(category)
   const stations = await fetchFromRadioBrowser(query)
-  console.log(`[Radio] Found ${stations.length} stations for ${category}`)
   setCachedStations(category, stations)
   return stations
 }

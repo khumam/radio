@@ -29,7 +29,6 @@ function getCachedNews(): CachedNews | null {
       return JSON.parse(cached)
     }
   } catch (error) {
-    console.error('Error reading from localStorage:', error)
   }
   return null
 }
@@ -42,7 +41,6 @@ function setCachedNews(text: string): void {
     }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(cached))
   } catch (error) {
-    console.error('Error writing to localStorage:', error)
   }
 }
 
@@ -70,7 +68,6 @@ async function fetchFromAPI(country: string, language: string): Promise<string> 
 
     return newsText || 'No news available at the moment • '
   } catch (error) {
-    console.error('Error fetching news:', error)
     return 'Error fetching news • Please check your connection • '
   }
 }

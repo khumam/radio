@@ -101,20 +101,17 @@ function App() {
     
     if (station) {
       setCurrentStation(station)
-      console.log('[Radio] Shuffled to:', station.name)
     }
     setIsLoading(false)
   }
 
   const handleAudioError = () => {
-    console.log('[Radio] Playback error, trying next station...')
     const remainingStations = stationsList.filter(s => s.stationuuid !== currentStation?.stationuuid)
     
     if (remainingStations.length > 0) {
       const nextStation = getRandomStation(remainingStations)
       if (nextStation) {
         setCurrentStation(nextStation)
-        console.log('[Radio] Switched to:', nextStation.name)
       }
     } else {
       setIsPlaying(false)
@@ -164,7 +161,6 @@ function App() {
       
       if (station) {
         setCurrentStation(station)
-        console.log('[Radio] Selected station:', station.name)
       }
       setCurrentVideoId(null)
     }
