@@ -142,18 +142,24 @@
 
 @keyframes marquee {
   0% {
+    -webkit-transform: translateX(0%);
     transform: translateX(0%);
   }
   100% {
+    -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
   }
 }
 
 .animate-marquee {
+  -webkit-animation: marquee 120s linear infinite;
   animation: marquee 120s linear infinite;
+  will-change: transform;
 }
 
 .marquee-content {
   display: flex;
   width: max-content;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
