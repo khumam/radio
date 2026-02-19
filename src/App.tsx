@@ -7,7 +7,7 @@ import { CATEGORIES, type CategoryType } from '@/lib/categories'
 import { AnimatedBackground } from '@/components/AnimatedBackground'
 import { fetchNewsData } from '@/lib/news'
 import { fetchRadioStations, getRandomStation, type RadioStation } from '@/lib/radio'
-import { getRandomVideoId } from '@/lib/videos'
+import { getRandomVideoId } from '@/lib/youtube'
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState<keyof typeof CATEGORIES | null>(null)
@@ -89,22 +89,6 @@ function App() {
     }
   }
 
-  const handleRadioShuffle = async () => {
-    if (currentType !== 'radio' || isLoading) return
-    
-    stopAll()
-    setIsLoading(true)
-    
-    const stations = await fetchRadioStations('taglist=news,talk,news,talk,music&limit=50&order=clickcount&reverse=true&bitrate_min=64')
-    setStationsList(stations)
-    const station = getRandomStation(stations)
-    
-    if (station) {
-      setCurrentStation(station)
-    }
-    setIsLoading(false)
-  }
-
   const handleAudioError = () => {
     const remainingStations = stationsList.filter(s => s.stationuuid !== currentStation?.stationuuid)
     
@@ -120,6 +104,22 @@ function App() {
 
   const handleAudioEnded = () => {
     setIsPlaying(false)
+  }
+
+  const handleRadioShuffle = async () => {
+    if (currentType !== 'radio' || isLoading) return
+    
+    stopAll()
+    setIsLoading(true)
+    
+    const stations = await fetchRadioStations('taglist=news,talk,news,talk,music&limit=50&order=clickcount&reverse=true&bitrate_min=64')
+    setStationsList(stations)
+    const station = getRandomStation(stations)
+    
+    if (station) {
+      setCurrentStation(station)
+    }
+    setIsLoading(false)
   }
 
   const onYouTubeReady = (event: any) => {
@@ -145,10 +145,10 @@ function App() {
     setIsLoading(true)
     setIsPlayerReady(false)
     setSelectedCategory(key)
-    
+
     const category = CATEGORIES[key]
     setCurrentType(category.type as CategoryType)
-    
+
     if (category.type === 'youtube') {
       const videoId = getRandomVideoId(key as 'cafe' | 'cars')
       setCurrentVideoId(videoId)
@@ -204,7 +204,7 @@ function App() {
               </Button>
             ))}
           </div>
- 
+
           <div className="flex justify-center gap-2">
             <Button
               size="icon-lg"
@@ -259,7 +259,7 @@ function App() {
               </div>
               <div className="text-purple-300">
                 {isLoading ? 'Loading...' : (
-                  currentType === 'youtube' 
+                  currentType === 'youtube'
                     ? CATEGORIES[selectedCategory].name
                     : (currentStation?.name || CATEGORIES[selectedCategory].name)
                 )}
