@@ -21,7 +21,7 @@ function App() {
     const state = event.data
     if (state === YouTube.PlayerState.PLAYING) {
       setIsPlaying(true)
-    } else if (state === YouTube.PlayerState.PAUSED || state === YouTube.PlayerState.ENDED) {
+    } else {
       setIsPlaying(false)
     }
   }
@@ -76,7 +76,7 @@ function App() {
           <div className="flex justify-center mb-4">
             <Radio className="w-12 h-12 text-purple-400" />
           </div>
-          <CardTitle className="text-2xl text-white">Radio App</CardTitle>
+          <CardTitle className="text-2xl text-white">Radio</CardTitle>
           <CardDescription className="text-slate-300">Select a category to start listening</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -136,7 +136,7 @@ function App() {
           {selectedCategory && (
             <div className="text-center">
               <div className={`text-sm font-semibold mb-1 ${isPlaying ? 'text-green-400' : 'text-slate-400'}`}>
-                {isPlaying ? '🔊 Now Playing' : '🔇 Ready to Play'}
+                {isPlaying ? 'Now Playing' : 'Ready to Play'}
               </div>
               <div className="text-purple-300">
                 {CATEGORIES[selectedCategory].name}
