@@ -6,8 +6,8 @@ export interface YouTubeVideo {
 export type VideoCategory = 'cafe' | 'cars'
 
 export const VIDEO_IDS = {
-  cafe: ['1YcnN9C0PCo', 'nfW6f2gf4g8', 'wGskLO2ESOI', 'OpZX51yb23w'],
-  cars: ['tiyuRJthHwc', 'R0UYHS8A_A', 'qzyl0f3mRG0', 'N0FPLdagb8Q']
+  cafe: ['jfKfPfyJRdk', '1YcnN9C0PCo', 'nfW6f2gf4g8', 'wGskLO2ESOI', 'OpZX51yb23w'],
+  cars: ['4xDzrJKXOOY', 'tiyuRJthHwc', 'R0UYHS8A_A', 'qzyl0f3mRG0', 'N0FPLdagb8Q']
 }
 
 export function shuffleArray<T>(array: T[]): T[] {
