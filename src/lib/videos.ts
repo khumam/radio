@@ -1,28 +1,10 @@
 export const VIDEO_IDS = {
-  'cafe-chill': [
+  'cafe': [
     'BYTxPFj44uo'
   ],
   'cars': [
     'QvA2NCigtBY'
-  ],
-  'news': [
-    'yNKvkPJl-tg',
   ]
-}
-
-export const CATEGORIES = {
-  'cafe-chill': {
-    name: 'Cafe and Chill',
-    description: 'Lofi/Chill Jazz stream'
-  },
-  'cars': {
-    name: 'Cars',
-    description: 'Driving/Synthwave stream'
-  },
-  'news': {
-    name: 'News',
-    description: 'News livestream'
-  }
 }
 
 export const shuffleArray = <T,>(array: T[]): T[] => {
