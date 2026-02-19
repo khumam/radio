@@ -80,7 +80,7 @@ function App() {
   return (
     <>
       <AnimatedBackground isPlaying={isPlaying} />
-      <div className="min-h-screen flex items-center justify-center p-4 relative z-10">
+      <div className="min-h-screen flex items-center justify-center p-4 relative z-10 flex-col">
       <Card className="w-full max-w-md bg-slate-800 border-purple-500/30">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
@@ -155,6 +155,17 @@ function App() {
           )}
         </CardContent>
       </Card>
+
+      <div className="w-full max-w-md mt-4 overflow-hidden bg-slate-800 border border-purple-500/30 rounded-lg">
+        <div className="animate-marquee marquee-content text-purple-300 py-2 px-4">
+          <span className="whitespace-nowrap">
+            BREAKING NEWS: Latest updates from around the world • Technology advances in AI and machine learning • Weather forecast predicts sunny days ahead • Stock markets showing positive trends • New scientific discoveries revolutionize medicine • Sports update: Championship finals scheduled for next week • Entertainment: Award season kicks off with stunning performances
+          </span>
+          <span className="whitespace-nowrap">
+            BREAKING NEWS: Latest updates from around the world • Technology advances in AI and machine learning • Weather forecast predicts sunny days ahead • Stock markets showing positive trends • New scientific discoveries revolutionize medicine • Sports update: Championship finals scheduled for next week • Entertainment: Award season kicks off with stunning performances
+          </span>
+        </div>
+      </div>
 
       {currentVideoId && (
         <div className="opacity-0 absolute -left-[9999px]">
